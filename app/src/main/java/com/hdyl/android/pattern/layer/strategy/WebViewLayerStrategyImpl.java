@@ -6,8 +6,6 @@ package com.hdyl.android.pattern.layer.strategy;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,25 +13,22 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
-import com.hdyl.android.MyWebView;
+import com.hdyl.android.pattern.layer.view.webview.MyWebView;
 import com.hdyl.android.pattern.R;
-import com.hdyl.android.pattern.layer.SureDialog;
 import com.hdyl.android.pattern.layer.interfaces.WebViewConfig;
-import com.hdyl.android.pattern.layer.utils.GBData;
+import com.hdyl.android.pattern.layer.utils.LayerConfig;
 
 import static android.view.View.GONE;
 
+/**
+ * @author  CH
+ * 显示透明的wbview窗口
+ */
 public class WebViewLayerStrategyImpl implements ILayerStrategy {
 
     public static final String TAG="WebViewLayerStrategyIml";
@@ -49,7 +44,6 @@ public class WebViewLayerStrategyImpl implements ILayerStrategy {
 
     @Override
     public void showLayer(Context context) {
-       // AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         myWebView=((Activity)context).findViewById(R.id.wv);
         if(myWebView!=null){
@@ -57,20 +51,18 @@ public class WebViewLayerStrategyImpl implements ILayerStrategy {
             return;
         }
 
-
         View view = View.inflate(context,R.layout.web_layout, null);
         myWebView = (MyWebView) view.findViewById(R.id.wv);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
-        webViewConfig.setUpWebConfig(myWebView);
+        webViewConfig.setUpWebConfig(myWebView, LayerConfig.redPocketScheme);
         myWebView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 bitmap=getBitmapFromView(myWebView);
-                if (null != bitmap)
-                {
+                if (null != bitmap) {
                     int pixel = bitmap.getPixel((int)event.getX(), (int)event.getY());
                     alpha = Color.alpha(pixel);
                     Log.e(TAG,event.getX()+"**"+event.getY()+"**"+alpha);
@@ -79,13 +71,12 @@ public class WebViewLayerStrategyImpl implements ILayerStrategy {
 
                 if(alpha==255){//实体
                     Log.e(TAG,"设置触摸监听器:返回true");
-                    return true;
+                    return false;
                 }
 
                 Log.e(TAG,"设置触摸监听器:返回false");
 
                 return false;
-
             }
         });
         ((Activity)context).getWindow().addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -93,7 +84,6 @@ public class WebViewLayerStrategyImpl implements ILayerStrategy {
 
     @Override
     public void dismissLayer(Context context) {
-        //将webview设置为gone
         myWebView=((Activity)context).findViewById(R.id.wv);
         if(myWebView!=null){
             myWebView.setVisibility(GONE);
@@ -120,19 +110,16 @@ public class WebViewLayerStrategyImpl implements ILayerStrategy {
      * @param v
      * @return
      */
-    public static Bitmap getBitmapFromView(View v)
-    {
+    public static Bitmap getBitmapFromView(View v) {
         Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
         v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
         // Draw background
         Drawable bgDrawable = v.getBackground();
-        if (bgDrawable != null)
-        {
+        if (bgDrawable != null) {
             bgDrawable.draw(c);
         }
-        else
-        {
+        else {
             c.drawColor(Color.WHITE);
         }
         // Draw view to canvas

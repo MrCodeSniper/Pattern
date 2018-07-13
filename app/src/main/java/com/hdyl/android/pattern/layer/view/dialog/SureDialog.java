@@ -1,9 +1,7 @@
-package com.hdyl.android.pattern.layer;
+package com.hdyl.android.pattern.layer.view.dialog;
 
 import android.content.Context;
-
 import android.content.DialogInterface;
-import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hdyl.android.pattern.BaseDialog;
 import com.hdyl.android.pattern.R;
 
 

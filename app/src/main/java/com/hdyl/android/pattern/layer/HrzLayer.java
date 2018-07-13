@@ -6,7 +6,6 @@ package com.hdyl.android.pattern.layer;
 
 
 import android.util.Log;
-import android.webkit.WebView;
 
 import com.hdyl.android.pattern.layer.impl.PushManagerImpl;
 import com.hdyl.android.pattern.layer.impl.TimerManagerImpl;
@@ -19,13 +18,7 @@ import com.hdyl.android.pattern.layer.interfaces.WebViewConfig;
 import com.hdyl.android.pattern.layer.strategy.LayerStrategyChooser;
 
 public class HrzLayer implements LayerLifecycle{
-
     private static final String TAG="HrzLayer";
-
-    public interface  onHrzLayerTouchListener{
-        void onTouchView();
-    }
-
 
     private TimerManager timerManagerImpl;
     private HybirdManager hybirdManagerImpl;
@@ -34,24 +27,29 @@ public class HrzLayer implements LayerLifecycle{
     private WebViewConfig webViewConfigImpl;
 
     private static Builder builders;
-
-
-    private LayerStrategyChooser layerStrategyChooser;//显示选择器是 dialog 还是webview
+    /** 选择器是 dialog 还是webview **/
+    private LayerStrategyChooser layerStrategyChooser;
 
     //添加单例 使用内部类实现真正的延迟加载
+    //当getInstance方法第一次被调用的时候，它第一次读取SingletonHolder.instance，
+    // 内部类SingletonHolder类得到初始化；而这个类在装载并被初始化的时候，会初始化它的静态域，
+    // 从而创建Singleton的实例，由于是静态的域，因此只会在虚拟机装载类的时候初始化一次，
+    // 并由虚拟机来保证它的线程安全性。
 
+    public static class Holder {
+        static HrzLayer INSTANCE=new HrzLayer(builders);
+    }
 
-
+    public static HrzLayer getInstance(Builder builder){
+        // 外围类能直接访问内部类（不管是否是静态的）的私有变量
+        builders=builder;
+        return Holder.INSTANCE;
+    }
 
     private HrzLayer(Builder builder){//私有化构造
        initialize(builder);
        create();
    }
-
-   public static HrzLayer.Builder builder(){
-       return new Builder();
-   }
-
 
     private void initialize(Builder builder) {
         this.timerManagerImpl=builder.timerManagerImpl;
@@ -61,32 +59,25 @@ public class HrzLayer implements LayerLifecycle{
         this.webViewConfigImpl=builder.webViewConfigImpl;
     }
 
-    public static class Holder {
-       static HrzLayer INSTANCE=new HrzLayer(builders);
-   }
+   ///////////////////////////////////////////////////////////////////
 
+   public static HrzLayer.Builder builder(){
+       return new Builder();
+   }
 
     public WebViewConfig getWebViewConfigImpl() {
         return webViewConfigImpl;
     }
 
-    public static HrzLayer getInstance(Builder builder){
-       // 外围类能直接访问内部类（不管是否是静态的）的私有变量
-       builders=builder;
-       return Holder.INSTANCE;
-   }
-
-    //当getInstance方法第一次被调用的时候，它第一次读取SingletonHolder.instance，
-    // 内部类SingletonHolder类得到初始化；而这个类在装载并被初始化的时候，会初始化它的静态域，
-    // 从而创建Singleton的实例，由于是静态的域，因此只会在虚拟机装载类的时候初始化一次，
-    // 并由虚拟机来保证它的线程安全性。
-
-
-
-
+    /**
+     * 设置 初始化选择器 选择器会显示对应的view
+     * @param layerStrategyChooser
+     */
     public void setLayerStrategyChooser(LayerStrategyChooser layerStrategyChooser) {
         this.layerStrategyChooser = layerStrategyChooser;
     }
+
+    /////////////////////////////////////生命周期接口实现////////////////////////////////////////////
 
     @Override
     public void onCreate() {
@@ -95,22 +86,18 @@ public class HrzLayer implements LayerLifecycle{
 
     @Override
     public void onShow() {
-
         if(layerStrategyChooser!=null){
             Log.e(TAG,"poplayer显示");
             layerStrategyChooser.performDisplay();
         }
-
     }
 
     @Override
     public void onDismiss() {
-
         if(layerStrategyChooser!=null){
             Log.e(TAG,"poplayer消失");
             layerStrategyChooser.performDismiss();
         }
-
     }
 
     @Override
@@ -118,7 +105,7 @@ public class HrzLayer implements LayerLifecycle{
         Log.e(TAG,"poplayer回收");
     }
 
-
+   /////////////////////////////////////开放函数给外界调用////////////////////////////////////////////
 
     private void show(){
        onShow();
@@ -136,13 +123,8 @@ public class HrzLayer implements LayerLifecycle{
         onRecycle();
     }
 
+    //////////////////////////////////内部类builder 配置适配层接口//////////////////////////////////////////////
 
-
-
-
-    /**
-     * 内部类builder 配置适配层接口
-     */
     public static class Builder {
 
         private TimerManager timerManagerImpl;
@@ -150,8 +132,6 @@ public class HrzLayer implements LayerLifecycle{
         private PushManager pushManagerImpl;
         private NavigationManager navigationManagerImpl;
         private WebViewConfig webViewConfigImpl;
-
-
 
         public HrzLayer.Builder setTimerManagerImpl(TimerManagerImpl timerManagerImpls) {
             this.timerManagerImpl = timerManagerImpls;
@@ -168,15 +148,9 @@ public class HrzLayer implements LayerLifecycle{
             return this;
         }
 
-
-
-
-
         public HrzLayer build(){
             return new HrzLayer(this);
         }
-
-
 
     }
 

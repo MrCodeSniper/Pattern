@@ -1,6 +1,8 @@
 package com.hdyl.android.pattern.layer.log;
 
 /**
+ * 状态模式与命令模式的结合 这个类包含着命令
+ * @author  CH
  * Created by mac on 2018/7/10.
  */
 

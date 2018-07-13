@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Button;
 
-import com.hdyl.android.pattern.layer.log.Logs;
-
 /**
  * Created by mac on 2018/7/11.
  */

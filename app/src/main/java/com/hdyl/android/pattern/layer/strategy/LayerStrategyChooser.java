@@ -9,10 +9,15 @@ import android.content.Context;
 
 public class LayerStrategyChooser {
 
-
     private ILayerStrategy iLayerStrategy;
+
     private Context mContext;
 
+    /**
+     * 构造方法传一次 也可以动态在运行中设置
+     * @param iLayerStrategy
+     * @param context
+     */
     public LayerStrategyChooser(ILayerStrategy iLayerStrategy, Context context) {
         this.iLayerStrategy = iLayerStrategy;
         this.mContext=context;
@@ -29,7 +34,5 @@ public class LayerStrategyChooser {
     public void performDismiss(){
         this.iLayerStrategy.dismissLayer(mContext);
     }
-
-
 
 }

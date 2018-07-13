@@ -5,19 +5,26 @@ package com.hdyl.android.pattern.layer.strategy;
 //Code Programming By MrCodeSniper on 2018/7/6.Best Wishes to You!  []~(~▽~)~* Cheers!
 
 
-import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 
-import com.hdyl.android.pattern.BaseDialog;
-import com.hdyl.android.pattern.R;
-import com.hdyl.android.pattern.layer.SureDialog;
+import com.hdyl.android.pattern.layer.view.dialog.SureDialog;
 
 public class NativeLayerStrategyImpl implements ILayerStrategy{
 
-
     private int layoutRes;
+
     private SureDialog dialog;
+
+    public interface onClickDismissListener{
+        void onDismissLayer();
+    }
+
+    private onClickDismissListener onClickDismissListener;
+
+    public void setOnClickDismissListener(NativeLayerStrategyImpl.onClickDismissListener onClickDismissListener) {
+        this.onClickDismissListener = onClickDismissListener;
+    }
 
     /** 原生dialog需要传dialog的布局 **/
     public NativeLayerStrategyImpl(int layoutRes) {
@@ -26,7 +33,6 @@ public class NativeLayerStrategyImpl implements ILayerStrategy{
 
     @Override
     public void showLayer(Context context) {
-
         if(dialog==null){
             dialog=new SureDialog(context);
         }
@@ -35,7 +41,9 @@ public class NativeLayerStrategyImpl implements ILayerStrategy{
         dialog.setSure("确认");
         dialog.setContent("弹出框测试");
         dialog.getSureView().setOnClickListener((View v)-> {
-           dismissLayer(null);
+           if(onClickDismissListener!=null){
+               onClickDismissListener.onDismissLayer();
+           }
         });
         dialog.setCancelable(false);
         dialog.show();

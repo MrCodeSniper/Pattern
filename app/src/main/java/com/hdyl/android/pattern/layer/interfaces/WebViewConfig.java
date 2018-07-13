@@ -8,8 +8,10 @@ package com.hdyl.android.pattern.layer.interfaces;
 import android.webkit.WebView;
 
 public interface WebViewConfig {
-
-    public void setUpWebConfig(WebView webView);
-
-
+    /**
+     * 配置webview
+     * @param webView
+     * @param showScheme
+     */
+    void setUpWebConfig(WebView webView,String showScheme);
 }

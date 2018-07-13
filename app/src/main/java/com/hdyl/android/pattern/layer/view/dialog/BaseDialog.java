@@ -1,4 +1,4 @@
-package com.hdyl.android.pattern;
+package com.hdyl.android.pattern.layer.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.os.Build.VERSION;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 
+import com.hdyl.android.pattern.R;
 
 
 /**

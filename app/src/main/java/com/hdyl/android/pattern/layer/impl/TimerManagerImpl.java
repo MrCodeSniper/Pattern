@@ -10,17 +10,21 @@ import com.hdyl.android.pattern.layer.log.Environment;
 import com.hdyl.android.pattern.layer.log.Logs;
 import com.hdyl.android.pattern.layer.log.Order;
 
+/**
+ * 时间管理实现类
+ * @author CH
+ */
 public class TimerManagerImpl implements TimerManager,Order {
 
     private Logs logs;
 
-    public TimerManagerImpl(Logs logs) {
+     TimerManagerImpl(Logs logs) {
         this.logs = logs;
     }
 
     @Override
     public void execute(Environment environment) {
-        logs.LogD("TimerManagerImpl");
+        logs.logE("TimerManagerImpl");
         environment.setOrder(this);
     }
 

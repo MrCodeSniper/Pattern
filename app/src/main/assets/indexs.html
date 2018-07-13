@@ -8,36 +8,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="css/rain.css" />
-	<style>
-	.rightbottom {
-
-
-         width:100px;
-         height:70px;
-    }
-
-
-.righttop {
-		position: absolute;
-        bottom:50px;
-         right:2.2%;
-         width:20px;
-         height:20px;
-
-    }
-
-	.page_rain{
-		background: #00000000;
-	}
-	.container{
-		position: fixed;
-		 bottom:2%;
-         right:2%;
-	}
-	.img-content{
-		position: relative;
-	}
-</style>
 	<script type="text/javascript" src="js/jquery.min.js" ></script>
 	<title></title>
 </head>
@@ -80,25 +50,13 @@
 			poplayer.hidePopLayer();
 		}
 	}
-
-
-
 </script>
 <body>
 	<div class="page_rain">
-
-		<div class="container">
-			<div class="img-content">
-				<img class="rightbottom" src="./images/chuai.png"/>
-				<img class="righttop" onclick="hidePopLayer()" src="./images/close.png"/>
-			</div>
-		</div>
-
-
-
+		<div class="div bg_1"></div>
 		<!--蒙层-->
 		<div class="chuai_box" style="display: none;">
-			<div class="chuai" >
+			<div class="chuai" onclick="hidePopLayer()">
 				<p>新春红包</p>
 			</div>
 		</div>

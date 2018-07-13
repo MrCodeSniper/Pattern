@@ -7,8 +7,12 @@ package com.hdyl.android.pattern.layer.strategy;
 
 import android.content.Context;
 
+/**
+ * @author CH
+ * 准备使用策略模式 动态改变算法
+ */
 public interface ILayerStrategy {
-    public void showLayer(Context context);
-    public void dismissLayer(Context context);
-    public void destroyLayer(Context context);
+     void showLayer(Context context);
+     void dismissLayer(Context context);
+     void destroyLayer(Context context);
 }
